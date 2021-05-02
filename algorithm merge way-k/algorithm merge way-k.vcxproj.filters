@@ -18,10 +18,13 @@
     <ClCompile Include="AlgorithmMergeWay-k.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MinHeap.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="Pair.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="KWayMergeSort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MinHeap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -30,6 +33,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Pair.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KWayMergeSort.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

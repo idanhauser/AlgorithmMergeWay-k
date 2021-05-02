@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <ostream>
 using namespace std;
-namespace HuffmanCoding
+namespace KWayMergeAlgo
 {
 	class Pair
 	{

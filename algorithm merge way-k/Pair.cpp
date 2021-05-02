@@ -2,7 +2,8 @@
 
 
 
-namespace HuffmanCoding
+namespace KWayMergeAlgo
+
 {
 	Pair::Pair()
 	{
