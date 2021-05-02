@@ -141,10 +141,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AlgorithmMergeWay-k.cpp" />
+    <ClCompile Include="KWayMergeSort.cpp" />
     <ClCompile Include="MinHeap.cpp" />
     <ClCompile Include="Pair.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="KWayMergeSort.h" />
     <ClInclude Include="MinHeap.h" />
     <ClInclude Include="Pair.h" />
   </ItemGroup>

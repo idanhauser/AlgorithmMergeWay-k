@@ -5,7 +5,7 @@
 
 using namespace std;
 
-namespace HuffmanCoding
+namespace KWayMergeAlgo
 {
 	class MinHeap
 	{
