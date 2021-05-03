@@ -6,7 +6,7 @@
 namespace KWayMergeAlgo {
 
 
-	KWayMergeSort::KWayMergeSort(int* arr, int n, int k, string outputName) :_k(k), _n(n), _arr(new int[n]),
+	KWayMergeSort::KWayMergeSort(int* arr, int n, int k, string outputName) :_kParts(k), _nSize(n), _arr(new int[n]),
 		_minHeap(k), _pfile(outputName)
 	{
 		if (!_pfile)
@@ -18,6 +18,11 @@ namespace KWayMergeAlgo {
 		{
 			_arr[i] = arr[i];
 		}
+	}
+
+	void KWayMergeSort::ExcecuteKMergeSort()
+	{
+		KMergeSort(_arr, 0, _nSize, _kParts);
 	}
 
 	void KWayMergeSort::KMergeSort(int* arr, int left, int right, int k)
