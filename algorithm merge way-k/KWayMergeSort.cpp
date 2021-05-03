@@ -36,6 +36,7 @@ namespace KWayMergeAlgo {
 				KMergeSort(arr, left+i, k+i-1, k);
 			}
 
+			mergeWithHeap()
 			//todo:Merge with Heap....https://medium.com/outco/how-to-merge-k-sorted-arrays-c35d87aa298e
 		}
 	}

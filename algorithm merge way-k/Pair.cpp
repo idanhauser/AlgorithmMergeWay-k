@@ -9,15 +9,16 @@ namespace KWayMergeAlgo
 	{
 	}
 
-	Pair::Pair(char key, int* freq) : _key(key),
-	                                   _array(freq)
+	Pair::Pair(int key, int left, int right) : _minElementInArr(key)
 	{
+		_arrayIndexes.start = left;
+		_arrayIndexes.end = right;
 	}
 
 	Pair::Pair(const Pair& other)
 	{
-		_freq = other._freq;
-		_key = other._key;
+		_arrayIndexes = other.getKey();
+		_arrayIndexes = other.getArrayIndexes();
 	}
 	/// <summary>
 	/// the key of pair
@@ -26,13 +27,16 @@ namespace KWayMergeAlgo
 	{
 		return _key;
 	}
+
+	Pair::indexes Pair::getArrayIndexes() const
+	{
+		return _arrayIndexes;
+	}
+
 	/// <summary>
 	///the freq of key
 	/// </summary>
-	int Pair::getFreq() const
-	{
-		return _freq;
-	}
+
 	/// <summary>
 	/// returns pair
 	/// </summary>
@@ -45,7 +49,7 @@ namespace KWayMergeAlgo
 	/// </summary>
 	/// <param name="key">the ket we want to set</param>
 	/// <returns>true if succeed else false</returns>
-	bool Pair::setKey(const char key) 
+	bool Pair::setKey(const int key) 
 	{
 		_key = key;
 		return true;
@@ -55,9 +59,9 @@ namespace KWayMergeAlgo
 /// </summary>
 /// <param name="freq">the freq we want to set</param>
 /// <returns>true if succeed else false</returns>
-	bool Pair::setFreq(const int freq) 
+	bool Pair::setIndexes(Pair::indexes data)
 	{
-		_freq = freq;
+		_arrayIndexes=data;
 		return true;
 	}
 	/// <summary>
