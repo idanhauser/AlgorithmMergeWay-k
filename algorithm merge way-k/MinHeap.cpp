@@ -6,14 +6,14 @@ namespace KWayMergeAlgo
 {
 
 
-	MinHeap::MinHeap(int phySize) :_data(new int* [phySize]), _phySize(phySize), _heapSize(0), _allocated(true)
+	MinHeap::MinHeap(int phySize) :_data(new Pair [phySize]), _phySize(phySize), _heapSize(0), _allocated(true)
 	{
 
 	}
 
-	MinHeap::MinHeap(int*& arr, const int size) : _phySize(size), _heapSize(size), _allocated(false)
+	MinHeap::MinHeap(Pair* arr, const int size) : _phySize(size), _heapSize(size), _allocated(false)
 	{
-		_data = &arr;
+		_data = arr;
 
 	}
 
@@ -52,9 +52,9 @@ namespace KWayMergeAlgo
 	///  It returns the root element of Min Heap. Time Complexity of this operation is O(1).
 	/// </summary>
 	/// <returns>root element of Min Heap</returns>
-	int* MinHeap::Min() const
+	Pair MinHeap::Min() const
 	{
-		return *_data;
+		return _data[0];
 	}
 	/// <summary>
 	/// Returns the left child node
@@ -91,7 +91,7 @@ namespace KWayMergeAlgo
 		int right = Right(node);
 		/* find the smallest of parent, left, and right */
 
-		if (left < _heapSize && _data[left]->_data.getFreq() < _data[node]->_data.getFreq())
+		if (left < _heapSize && _data[left].getKey() < _data[node].getKey())
 		{
 			min = left;
 		}
@@ -99,14 +99,14 @@ namespace KWayMergeAlgo
 		{
 			min = node;
 		}
-		if (right < _heapSize && _data[right]->_data.getFreq() < _data[min]->_data.getFreq())
+		if (right < _heapSize && _data[right].getKey() < _data[min].getKey())
 		{
 			min = right;
 		}
 
 
 		if (min != node) {
-			int* temp = _data[node];
+			Pair temp = _data[node];
 			_data[node] = _data[min];
 			_data[min] = temp;
 			FixHeap(min);
@@ -118,24 +118,24 @@ namespace KWayMergeAlgo
 	///Remove the element at head of the queue 
 	/// </summary>
 	/// <returns>retuns the element with the minimum frequency.(the root in the MinHeap) </returns>
-	int& MinHeap::DeleteMin()
+	Pair& MinHeap::DeleteMin()
 	{
-		int* MinTreeNode;
+		Pair minElementPair;
 		if (_heapSize == 0) {
 			cout << "ERROR: heap underflow! maybe file is empty?" << endl;
 			exit(1);
 		}
-		MinTreeNode = _data[0];
+		minElementPair = _data[0];
 		_heapSize--;
 		_data[0] = _data[_heapSize];
 		FixHeap(0);
-		return *MinTreeNode;
+		return minElementPair;
 	}
 	/// <summary>
 	/// insert item to the heap the priority is the frequency of the pair.
 	/// </summary>
 	/// <param name="item">the item we insert to the heap</param>
-	void MinHeap::insert(int& item)
+	void MinHeap::insert(Pair& item)
 	{
 		if (_phySize == _heapSize)
 		{
@@ -145,11 +145,11 @@ namespace KWayMergeAlgo
 		int i = _heapSize;
 		_heapSize++;
 
-		while ((i > 0) && (_data[Parent(i)]->_data.getFreq() > item._data.getFreq())) {
+		while ((i > 0) && (_data[Parent(i)].getKey() > item.getKey())) {
 			_data[i] = _data[Parent(i)];
 			i = Parent(i);
 		}
-		_data[i] = &item;
+		_data[i] = item;
 	}
 
 
@@ -182,7 +182,7 @@ namespace KWayMergeAlgo
 			_allocated = other._allocated;
 			_heapSize = other._heapSize;
 			_phySize = other._phySize;
-			_data = new int * [_phySize];
+			_data = new Pair [_phySize];
 		}
 		return *this;
 	}
@@ -195,7 +195,7 @@ namespace KWayMergeAlgo
 	{
 		for (int i = 0; i < queue._heapSize; ++i)
 		{
-			os << queue._data[i]->getData();
+			os << queue._data[i] << endl;
 		}
 		return os;
 	}

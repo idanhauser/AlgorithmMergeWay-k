@@ -36,7 +36,7 @@ namespace KWayMergeAlgo {
 				KMergeSort(arr, left+i, k+i-1, k);
 			}
 
-			mergeWithHeap()
+			mergeKArraysWithHeap(_arr,left,right,k);
 			//todo:Merge with Heap....https://medium.com/outco/how-to-merge-k-sorted-arrays-c35d87aa298e
 		}
 	}
@@ -45,6 +45,10 @@ namespace KWayMergeAlgo {
 	{
 		delete[] _arr;
 		_pfile.close();
+	}
+
+	void KWayMergeSort::mergeKArraysWithHeap(int* p, int left, int right, int k)
+	{
 	}
 
 	void KWayMergeSort::QuickSort(int* arr, int left, int right)
@@ -58,6 +62,7 @@ namespace KWayMergeAlgo {
 			QuickSort(arr, pivot + 1, right);
 		}
 	}
+
 
 	int KWayMergeSort::Partition(int* arr, int left, int right)
 	{

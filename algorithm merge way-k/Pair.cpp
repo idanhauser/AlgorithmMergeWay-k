@@ -15,20 +15,26 @@ namespace KWayMergeAlgo
 		_arrayIndexes.end = right;
 	}
 
+	Pair::Pair(int key, Indexes arrIndexes)
+	{
+		_minElementInArr = key;
+		_arrayIndexes = arrIndexes;
+	}
+
 	Pair::Pair(const Pair& other)
 	{
-		_arrayIndexes = other.getKey();
+		_minElementInArr = other.getKey();
 		_arrayIndexes = other.getArrayIndexes();
 	}
 	/// <summary>
 	/// the key of pair
 	/// </summary>
-	char Pair::getKey() const
+	int Pair::getKey() const
 	{
-		return _key;
+		return _minElementInArr;
 	}
 
-	Pair::indexes Pair::getArrayIndexes() const
+	Pair::Indexes Pair::getArrayIndexes() const
 	{
 		return _arrayIndexes;
 	}
@@ -51,7 +57,7 @@ namespace KWayMergeAlgo
 	/// <returns>true if succeed else false</returns>
 	bool Pair::setKey(const int key) 
 	{
-		_key = key;
+		_minElementInArr = key;
 		return true;
 	}
 	/// <summary>
@@ -59,26 +65,20 @@ namespace KWayMergeAlgo
 /// </summary>
 /// <param name="freq">the freq we want to set</param>
 /// <returns>true if succeed else false</returns>
-	bool Pair::setIndexes(Pair::indexes data)
+	bool Pair::setIndexes(Pair::Indexes data)
 	{
 		_arrayIndexes=data;
 		return true;
 	}
-	/// <summary>
-	/// operator ++ to add one to freq.
-	/// </summary>
-	/// <param name=""></param>
-	void Pair::operator++(int)
-	{
-		_freq++;
-	}
+
 	/// <summary>
 	/// prints the pair
 	/// </summary>
 
 	ostream& operator<<(ostream& os, const Pair& pair)
 	{
-		os << pair.getKey() << ":" << pair.getFreq() << endl;
+		os << "The minimum element in the array is " << pair.getKey() << "and the array indexes are :\n";
+		os << "Start: " << pair.getArrayIndexes().start << " ,End:" << pair.getArrayIndexes().end << '.';
 		return os;
 	}
 }

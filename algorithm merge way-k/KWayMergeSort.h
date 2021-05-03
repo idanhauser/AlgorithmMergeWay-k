@@ -19,6 +19,8 @@ namespace KWayMergeAlgo {
 		KWayMergeSort(int* arr, int n, int k,string outputName);
 		~KWayMergeSort();
 
+	
+		void mergeKArraysWithHeap(int* p, int left, int right, int k);
 		void KMergeSort(int* arr, int left, int right, int k);
 		void QuickSort(int* arr, int left, int right);
 		int Partition(int* arr, int left ,int right);

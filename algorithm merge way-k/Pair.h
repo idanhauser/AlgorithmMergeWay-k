@@ -5,7 +5,7 @@ namespace KWayMergeAlgo
 {
 	class Pair
 	{
-		struct indexes
+		struct Indexes
 		{
 			int start;
 			int end;
@@ -13,19 +13,19 @@ namespace KWayMergeAlgo
 	public:
 		Pair();
 		Pair(int key, int left,int right);
+		Pair(int key,Indexes arrIndexes);
 		Pair(const Pair& other);
 		~Pair() = default;
-		char getKey() const;
-		indexes getArrayIndexes() const;
+		int getKey() const;
+		Indexes getArrayIndexes() const;
 		const Pair& getPair() const;
 		bool setKey(int key);
-		bool setIndexes(indexes data);
-		void operator++(int);
+		bool setIndexes(Indexes data);
 		friend std::ostream& operator<<(ostream& os, const Pair& pair);
 		//good to use defult operator for =
 	private:
 		int _minElementInArr;
-		indexes _arrayIndexes;
+		Indexes _arrayIndexes;
 
 
 	};
