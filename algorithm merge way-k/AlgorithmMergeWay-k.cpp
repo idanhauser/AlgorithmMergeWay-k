@@ -17,7 +17,7 @@ void ReadDataFromUser(int size, const string& inFileName, int* arr)
 		exit(2);
 	}
 	while (!inData.eof()) {
-		inData >> arr[i];
+		inData >> arr[i++];
 	}
 	inData.close();
 }
@@ -46,6 +46,7 @@ int main()
 
 
 	KWayMergeSort sortingRunner(arr, size, k,outputName);
+	sortingRunner.ExcecuteKMergeSort();
 
 }
 

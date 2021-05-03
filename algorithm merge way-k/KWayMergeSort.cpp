@@ -48,8 +48,8 @@ namespace KWayMergeAlgo {
 
 	void KWayMergeSort::KMergeSort(int* arr, int left, int right, int k)
 	{
-		int len = left - right + 1;
-		if (len < k)
+		int len = right-left + 1;
+		if (len <= k)
 		{
 			QuickSort(arr, left, right);
 			return;
@@ -62,7 +62,7 @@ namespace KWayMergeAlgo {
 				KMergeSort(arr, left + i, k + i - 1, k);
 			}
 
-			mergeKArraysWithHeap(&_arr, left, right, k);
+			mergeKArraysWithHeap(_arr, left, right, k);
 			//done:Merge with Heap....https://medium.com/outco/how-to-merge-k-sorted-arrays-c35d87aa298e
 		}
 	}
@@ -73,11 +73,11 @@ namespace KWayMergeAlgo {
 		_pfile.close();
 	}
 
-	void KWayMergeSort::mergeKArraysWithHeap(int** arr, int left, int right, int k)
+	void KWayMergeSort::mergeKArraysWithHeap(int* arr, int left, int right, int k)
 	{
 		Pair newPair;
 		Pair currPair;
-		int len = left - right + 1;
+		int len = right-left + 1;
 		int parts = ceil(len / k);
 		int* newSortedArr = new int[len];
 		int idx = 0;
@@ -88,7 +88,7 @@ namespace KWayMergeAlgo {
 
 		for (int i = 0; i < parts; i += k)
 		{
-			Pair item(*arr[i], left + i, left + i - 1);
+			Pair item(arr[i], left + i, left + i - 1);
 			_minHeap.insert(item);
 		}
 
@@ -101,12 +101,12 @@ namespace KWayMergeAlgo {
 
 			if (newLeft < currPair.getArrayIndexes().end)
 			{
-				newPair.setKey(*arr[newLeft]);
+				newPair.setKey(arr[newLeft]);
 				newPair.setIndexes(newLeft, currPair.getArrayIndexes().end);
 				_minHeap.insert(newPair);
 			}
 		}
-		*arr = newSortedArr;
+		arr = newSortedArr;
 	}
 
 	void KWayMergeSort::QuickSort(int* arr, int left, int right)

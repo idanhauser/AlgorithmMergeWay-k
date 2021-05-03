@@ -19,12 +19,12 @@ namespace KWayMergeAlgo {
 		int _nSize;
 		int* _arr;
 		MinHeap _minHeap;
-		fstream _pfile;
+		ofstream _pfile;
 		KWayMergeSort(const KWayMergeSort& other) = delete;
 		const KWayMergeSort& operator=(const KWayMergeSort& other) = delete;
 
 
-		void mergeKArraysWithHeap(int** pArr, int left, int right, int k);
+		void mergeKArraysWithHeap(int* pArr, int left, int right, int k);
 		void KMergeSort(int* arr, int left, int right, int k);
 		void QuickSort(int* arr, int left, int right);
 		int Partition(int* arr, int left, int right);
