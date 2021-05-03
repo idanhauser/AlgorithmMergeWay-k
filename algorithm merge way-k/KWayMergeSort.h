@@ -9,6 +9,10 @@ namespace KWayMergeAlgo {
 	public:
 		KWayMergeSort(int* arr, int n, int k, string outputName);
 		void ExcecuteKMergeSort();
+		int getArraySize() const;
+		int getK() const;
+		void setK(int k);
+		int* getArray() const;
 		~KWayMergeSort();
 	private:
 		int _kParts;
@@ -20,7 +24,7 @@ namespace KWayMergeAlgo {
 		const KWayMergeSort& operator=(const KWayMergeSort& other) = delete;
 
 
-		void mergeKArraysWithHeap(int* p, int left, int right, int k);
+		void mergeKArraysWithHeap(int** pArr, int left, int right, int k);
 		void KMergeSort(int* arr, int left, int right, int k);
 		void QuickSort(int* arr, int left, int right);
 		int Partition(int* arr, int left, int right);

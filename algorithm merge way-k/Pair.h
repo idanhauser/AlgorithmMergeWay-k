@@ -16,11 +16,12 @@ namespace KWayMergeAlgo
 		Pair(int key,Indexes arrIndexes);
 		Pair(const Pair& other);
 		~Pair() = default;
-		int getKey() const;
+		int getMinElement() const;
 		Indexes getArrayIndexes() const;
 		const Pair& getPair() const;
 		bool setKey(int key);
 		bool setIndexes(Indexes data);
+		bool setIndexes(int left, int right);
 		friend std::ostream& operator<<(ostream& os, const Pair& pair);
 		//good to use defult operator for =
 	private:

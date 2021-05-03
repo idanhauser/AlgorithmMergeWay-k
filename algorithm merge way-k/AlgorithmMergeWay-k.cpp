@@ -30,7 +30,7 @@ int main()
 	string inputName;
 	string outputName;
 
-	cout << "Enter how many numbers" << endl;
+	cout << "Enter how many numbers there are in the file" << endl;
 	cin >> size;
 
 	cout << "Enter k";

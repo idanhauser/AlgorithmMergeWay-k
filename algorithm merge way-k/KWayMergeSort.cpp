@@ -1,6 +1,7 @@
 ﻿#include "KWayMergeSort.h"
-
+#include "Pair.h"
 #include <iostream>
+
 
 
 namespace KWayMergeAlgo {
@@ -25,10 +26,30 @@ namespace KWayMergeAlgo {
 		KMergeSort(_arr, 0, _nSize, _kParts);
 	}
 
+	int KWayMergeSort::getArraySize() const
+	{
+		return _nSize;
+	}
+
+	int KWayMergeSort::getK() const
+	{
+		return _kParts;
+	}
+
+	void KWayMergeSort::setK(int k)
+	{
+		_kParts = k;
+	}
+
+	int* KWayMergeSort::getArray() const
+	{
+		return _arr;
+	}
+
 	void KWayMergeSort::KMergeSort(int* arr, int left, int right, int k)
 	{
 		int len = left - right + 1;
-		if(len<k)
+		if (len < k)
 		{
 			QuickSort(arr, left, right);
 			return;
@@ -36,13 +57,13 @@ namespace KWayMergeAlgo {
 		else
 		{
 			int parts = ceil(len / k);
-			for (int i = 0; i < parts;i+=k)
+			for (int i = 0; i < parts; i += k)
 			{
-				KMergeSort(arr, left+i, k+i-1, k);
+				KMergeSort(arr, left + i, k + i - 1, k);
 			}
 
-			mergeKArraysWithHeap(_arr,left,right,k);
-			//todo:Merge with Heap....https://medium.com/outco/how-to-merge-k-sorted-arrays-c35d87aa298e
+			mergeKArraysWithHeap(&_arr, left, right, k);
+			//done:Merge with Heap....https://medium.com/outco/how-to-merge-k-sorted-arrays-c35d87aa298e
 		}
 	}
 
@@ -52,8 +73,40 @@ namespace KWayMergeAlgo {
 		_pfile.close();
 	}
 
-	void KWayMergeSort::mergeKArraysWithHeap(int* p, int left, int right, int k)
+	void KWayMergeSort::mergeKArraysWithHeap(int** arr, int left, int right, int k)
 	{
+		Pair newPair;
+		Pair currPair;
+		int len = left - right + 1;
+		int parts = ceil(len / k);
+		int* newSortedArr = new int[len];
+		int idx = 0;
+		int newLeft;
+
+		//Init the Heap		
+		_minHeap.makeEmpty();
+
+		for (int i = 0; i < parts; i += k)
+		{
+			Pair item(*arr[i], left + i, left + i - 1);
+			_minHeap.insert(item);
+		}
+
+		while (!_minHeap.isEmpty())
+		{
+			currPair = _minHeap.DeleteMin();
+
+			newSortedArr[idx++] = currPair.getMinElement();
+			newLeft = currPair.getArrayIndexes().start + 1;
+
+			if (newLeft < currPair.getArrayIndexes().end)
+			{
+				newPair.setKey(*arr[newLeft]);
+				newPair.setIndexes(newLeft, currPair.getArrayIndexes().end);
+				_minHeap.insert(newPair);
+			}
+		}
+		*arr = newSortedArr;
 	}
 
 	void KWayMergeSort::QuickSort(int* arr, int left, int right)
@@ -111,6 +164,19 @@ namespace KWayMergeAlgo {
 		double temp = *pnum1;
 		*pnum1 = *pnum2;
 		*pnum2 = temp;
+	}
+
+
+	ostream& operator<<(ostream& os, const KWayMergeSort& sortingAlgo)
+	{
+		int* pArr = sortingAlgo.getArray();
+		int arrSize=sortingAlgo.getArraySize();
+		os << "The Sorted array: \n";
+		for (int j = 0; j < arrSize; ++j)
+		{
+			os << pArr[j] << "\t";
+		}
+		return os;
 	}
 }
 

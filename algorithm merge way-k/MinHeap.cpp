@@ -91,7 +91,7 @@ namespace KWayMergeAlgo
 		int right = Right(node);
 		/* find the smallest of parent, left, and right */
 
-		if (left < _heapSize && _data[left].getKey() < _data[node].getKey())
+		if (left < _heapSize && _data[left].getMinElement() < _data[node].getMinElement())
 		{
 			min = left;
 		}
@@ -99,7 +99,7 @@ namespace KWayMergeAlgo
 		{
 			min = node;
 		}
-		if (right < _heapSize && _data[right].getKey() < _data[min].getKey())
+		if (right < _heapSize && _data[right].getMinElement() < _data[min].getMinElement())
 		{
 			min = right;
 		}
@@ -145,7 +145,7 @@ namespace KWayMergeAlgo
 		int i = _heapSize;
 		_heapSize++;
 
-		while ((i > 0) && (_data[Parent(i)].getKey() > item.getKey())) {
+		while ((i > 0) && (_data[Parent(i)].getMinElement() > item.getMinElement())) {
 			_data[i] = _data[Parent(i)];
 			i = Parent(i);
 		}
