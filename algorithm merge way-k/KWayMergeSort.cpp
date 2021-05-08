@@ -1,5 +1,6 @@
 ﻿#include "KWayMergeSort.h"
 #include "Pair.h"
+#include <math.h> 
 #include <iostream>
 
 
@@ -24,6 +25,10 @@ namespace KWayMergeAlgo {
 	void KWayMergeSort::ExcecuteKMergeSort()
 	{
 		KMergeSort(_arr, 0, _nSize, _kParts);
+		for (int i = 0; i < _nSize; ++i)
+		{
+			cout << _arr[i] << endl;
+		}
 	}
 
 	int KWayMergeSort::getArraySize() const
@@ -48,7 +53,7 @@ namespace KWayMergeAlgo {
 
 	void KWayMergeSort::KMergeSort(int* arr, int left, int right, int k)
 	{
-		int len = right-left + 1;
+		int len = right - left;
 		if (len <= k)
 		{
 			QuickSort(arr, left, right);
@@ -56,10 +61,11 @@ namespace KWayMergeAlgo {
 		}
 		else
 		{
-			int parts = ceil(len / k);
-			for (int i = 0; i < parts; i += k)
+			int parts = ceil((double)((len) / (k)));
+			parts += len % k;
+			for (int i = 0; i < k; i++)
 			{
-				KMergeSort(arr, left + i, k + i - 1, k);
+				KMergeSort(arr, (i*parts) , (i * parts + (parts)-1), k);
 			}
 
 			mergeKArraysWithHeap(_arr, left, right, k);
@@ -77,18 +83,19 @@ namespace KWayMergeAlgo {
 	{
 		Pair newPair;
 		Pair currPair;
-		int len = right-left + 1;
-		int parts = ceil(len / k);
+		int len = right - left;
 		int* newSortedArr = new int[len];
 		int idx = 0;
 		int newLeft;
+		int parts = ceil((double)((len + 1) / (k)));
+		parts += len % k;
 
 		//Init the Heap		
 		_minHeap.makeEmpty();
 
-		for (int i = 0; i < parts; i += k)
+		for (int i = 0; i < k; i++)
 		{
-			Pair item(arr[i], left + i, left + i - 1);
+			Pair item(arr[i], i*parts, (i * parts + (parts)-1));
 			_minHeap.insert(item);
 		}
 
@@ -106,7 +113,10 @@ namespace KWayMergeAlgo {
 				_minHeap.insert(newPair);
 			}
 		}
-		arr = newSortedArr;
+		for (int i = 0; i < _nSize; ++i)
+		{
+			cout << newSortedArr[i] << endl;
+		}
 	}
 
 	void KWayMergeSort::QuickSort(int* arr, int left, int right)
@@ -170,7 +180,7 @@ namespace KWayMergeAlgo {
 	ostream& operator<<(ostream& os, const KWayMergeSort& sortingAlgo)
 	{
 		int* pArr = sortingAlgo.getArray();
-		int arrSize=sortingAlgo.getArraySize();
+		int arrSize = sortingAlgo.getArraySize();
 		os << "The Sorted array: \n";
 		for (int j = 0; j < arrSize; ++j)
 		{

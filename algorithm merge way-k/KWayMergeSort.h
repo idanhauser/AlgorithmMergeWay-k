@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include "MinHeap.h"
+#include <math.h> 
 #include "Pair.h"
 namespace KWayMergeAlgo {
 	class KWayMergeSort
