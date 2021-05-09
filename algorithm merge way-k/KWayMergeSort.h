@@ -16,6 +16,7 @@ namespace KWayMergeAlgo {
 		int* getArray() const;
 		~KWayMergeSort();
 	private:
+		int* _newSortedArr ;
 		int _kParts;
 		int _nSize;
 		int* _arr;
