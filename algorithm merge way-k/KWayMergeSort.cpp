@@ -24,8 +24,8 @@ namespace KWayMergeAlgo {
 
 	void KWayMergeSort::ExcecuteKMergeSort()
 	{
-		KMergeSort(_arr, 0, _nSize-1, _kParts);
-		for (int i = 0; i < _nSize; ++i)
+		KMergeSort(_arr, 0, _nSize, _kParts);
+ 		for (int i = 0; i < _nSize; ++i)
 		{
 			cout << _arr[i] << endl;
 		}
@@ -65,9 +65,17 @@ namespace KWayMergeAlgo {
 			parts += (len+1) % k;
 			for (int i = 0; i < k; i++)
 			{
-				KMergeSort(arr, (i*parts)+left , left+(i * parts + (parts)-1), k);
+				if (left + (i * parts + (parts)-1) < _nSize)
+				{
+					KMergeSort(arr, (i * parts) + left, left + (i * parts + (parts)-1), k);
+				}
+				else
+				{//is that ok? i am not sure
+					KMergeSort(arr, (i * parts) + left, _nSize-1,k);
+				}
 			}
-
+			cout << "left = " << left << " right = " << right << endl;
+		//	cout << "left = " << left << " right = " << right << endl;
 			mergeKArraysWithHeap(arr, left, right, k);
 			//done:Merge with Heap....https://medium.com/outco/how-to-merge-k-sorted-arrays-c35d87aa298e
 		}
@@ -115,7 +123,7 @@ namespace KWayMergeAlgo {
 				_minHeap.insert(newPair);
 			}
 		}
-		for (int i = 0; i < counter; ++i)
+		for (int i = 0; i < counter && left+i<_nSize; ++i)
 		{
 			_arr[left + i] = _newSortedArr[leftC -counter+i];
 		}
