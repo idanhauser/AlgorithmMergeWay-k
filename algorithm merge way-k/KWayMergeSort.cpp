@@ -63,9 +63,31 @@ namespace KWayMergeAlgo {
 			return;
 		}
 		int m = left + (right - left) / k;
-		KMergeSort(arr, left, m, k);
-		KMergeSort(arr, m + 1, right, k);
+		int leftOver = len % k;
+		for (int i = 0; i < k; i++) {
+			//KMergeSort(arr, left, m, k);
+			if (leftOver && (left + (i * m + (m)-1 + m) >= _nSize))
+			{
+				KMergeSort(arr, (i * m) + left, left + (i * m + (m)), k);
+				mergeKArraysWithHeap(arr, (i * m) + left, _nSize - 1, k);
+			}
+			else 
+			{
+				if (left + (i * m + (m)-1) < _nSize)
+				{
+					KMergeSort(arr, (i * m) + left,
+						left + (i * m + (m)-1), k);
+				}
+				//else
+				//{//is that ok? i am not sure
+				//	KMergeSort(arr, (i * m) + left, _nSize - 1, k);
+				//}
+				cout << "left = " << left << " right = " << right << endl;
+			}
+		}
 		mergeKArraysWithHeap(arr, left, right, k);
+		//	cout << "left = " << left << " right = " << right << endl;	
+		//KMergeSort(arr, m + 1, right, k);
 	}
 
 	KWayMergeSort::~KWayMergeSort()
@@ -83,7 +105,7 @@ namespace KWayMergeAlgo {
 		Pair currPair;
 		int len = right - left + 1;
 		int newLeft;
-		int m = len / k +(len%k);
+		int m = len / k + (len%k);
 		//m += len % k;
 		Pair item;
 		//Init the Heap		
