@@ -1,4 +1,7 @@
 ﻿#include "KWayMergeSort.h"
+
+#include <algorithm>
+
 #include "Pair.h"
 #include <math.h> 
 #include <iostream>
@@ -9,7 +12,7 @@ namespace KWayMergeAlgo {
 
 
 	KWayMergeSort::KWayMergeSort(int* arr, int n, int k, string outputName) :_kParts(k), _nSize(n), _arr(new int[n]),
-		_minHeap(k), _pfile(outputName),_newSortedArr(new int[n])
+		_minHeap(k), _pfile(outputName), _newSortedArr(new int[n])
 	{
 		if (!_pfile)
 		{
@@ -24,8 +27,8 @@ namespace KWayMergeAlgo {
 
 	void KWayMergeSort::ExcecuteKMergeSort()
 	{
-		KMergeSort(_arr, 0, _nSize, _kParts);
- 		for (int i = 0; i < _nSize; ++i)
+		KMergeSort(_arr, 0, _nSize - 1, _kParts);
+		for (int i = 0; i < _nSize; ++i)
 		{
 			cout << _arr[i] << endl;
 		}
@@ -53,32 +56,16 @@ namespace KWayMergeAlgo {
 
 	void KWayMergeSort::KMergeSort(int* arr, int left, int right, int k)
 	{
-		int len = right - left;
+		int len = right - left + 1;
 		if (len < k)
 		{
 			QuickSort(arr, left, right);
 			return;
 		}
-		else
-		{
-			int parts = ceil((double)((len+1) / (k)));
-			parts += (len+1) % k;
-			for (int i = 0; i < k; i++)
-			{
-				if (left + (i * parts + (parts)-1) < _nSize)
-				{
-					KMergeSort(arr, (i * parts) + left, left + (i * parts + (parts)-1), k);
-				}
-				else
-				{//is that ok? i am not sure
-					KMergeSort(arr, (i * parts) + left, _nSize-1,k);
-				}
-			}
-			cout << "left = " << left << " right = " << right << endl;
-		//	cout << "left = " << left << " right = " << right << endl;
-			mergeKArraysWithHeap(arr, left, right, k);
-			//done:Merge with Heap....https://medium.com/outco/how-to-merge-k-sorted-arrays-c35d87aa298e
-		}
+		int m = left + (right - left) / k;
+		KMergeSort(arr, left, m, k);
+		KMergeSort(arr, m + 1, right, k);
+		mergeKArraysWithHeap(arr, left, right, k);
 	}
 
 	KWayMergeSort::~KWayMergeSort()
@@ -91,21 +78,31 @@ namespace KWayMergeAlgo {
 	void KWayMergeSort::mergeKArraysWithHeap(int* arr, int left, int right, int k)
 	{
 		int leftC = left;
-		static int idx = 0;
 		int counter = 0;
 		Pair newPair;
 		Pair currPair;
-		int len = right - left;
+		int len = right - left + 1;
 		int newLeft;
-		int parts = ceil((double)((len + 1) / (k)));
-		parts += (len + 1) % k;
-
+		int m = len / k +(len%k);
+		//m += len % k;
+		Pair item;
 		//Init the Heap		
 		_minHeap.makeEmpty();
+		//todo: fix
 
 		for (int i = 0; i < k; i++)
 		{
-			Pair item(arr[(i * parts)+left], (i * parts) + left, left+(i * parts + (parts)-1));
+			if (i * m + left + m - 1 <= _nSize - 1)
+			{
+				item.setKey(arr[(i * m) + left]);
+				item.setIndexes((i * m) + left,
+					i * m + left + m - 1);
+			}
+			else 
+			{
+				item.setKey(arr[(i * m) + left]);
+				item.setIndexes((i * m) + left, _nSize - 1);
+			}
 			_minHeap.insert(item);
 		}
 
@@ -123,9 +120,9 @@ namespace KWayMergeAlgo {
 				_minHeap.insert(newPair);
 			}
 		}
-		for (int i = 0; i < counter && left+i<_nSize; ++i)
+		for (int i = 0; i < counter && left + i < _nSize; ++i)
 		{
-			_arr[left + i] = _newSortedArr[leftC -counter+i];
+			_arr[left + i] = _newSortedArr[leftC - counter + i];
 		}
 
 

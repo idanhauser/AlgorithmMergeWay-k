@@ -68,9 +68,9 @@ void ReadDataFromUser(int size, const string& inFileName, int* arr)
 int main()
 {
 	int* arr = nullptr;
-	int size = 100;
-	int k =2;
-	string inputName = "input_file_2.txt";
+	int size = 7;
+	int k =3;
+	string inputName = "input.txt";
 	string outputName = "output.txt";
 
 
