@@ -9,8 +9,9 @@ namespace KWayMergeAlgo
 	{
 	}
 
-	Pair::Pair(int key, int left, int right) : _minElementInArr(key)
+	Pair::Pair(int key, int left, int right, int idxArr) : _minElementInArr(key)
 	{
+		_arrayIndexes.idx_arr = idxArr;
 		_arrayIndexes.start = left;
 		_arrayIndexes.end = right;
 	}
@@ -77,6 +78,18 @@ namespace KWayMergeAlgo
 		_arrayIndexes.end = right;
 		return true;
 	}
+
+	bool Pair::setIndexArr(int idxArr)
+	{
+		_arrayIndexes.idx_arr = idxArr;
+		return true;
+	}
+
+	int Pair::getIndexArr() const
+	{
+		return _arrayIndexes.idx_arr;
+	}
+
 	/// <summary>
 	/// prints the pair
 	/// </summary>

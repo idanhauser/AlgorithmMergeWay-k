@@ -9,7 +9,7 @@ namespace KWayMergeAlgo {
 
 
 	KWayMergeSort::KWayMergeSort(int* arr, int n, int k, string outputName) :_kParts(k), _nSize(n), _arr(new int[n]),
-		_minHeap(k), _pfile(outputName),_newSortedArr(new int[n])
+		_minHeap(k), _pfile(outputName), _newSortedArr(new int[n])
 	{
 		if (!_pfile)
 		{
@@ -24,8 +24,8 @@ namespace KWayMergeAlgo {
 
 	void KWayMergeSort::ExcecuteKMergeSort()
 	{
-		KMergeSort(_arr, 0, _nSize, _kParts);
- 		for (int i = 0; i < _nSize; ++i)
+		KMergeSort(_arr, 0, _nSize - 1, _kParts);
+		for (int i = 0; i < _nSize; ++i)
 		{
 			cout << _arr[i] << endl;
 		}
@@ -53,7 +53,7 @@ namespace KWayMergeAlgo {
 
 	void KWayMergeSort::KMergeSort(int* arr, int left, int right, int k)
 	{
-		int len = right - left;
+		int len = right - left + 1;
 		if (len < k)
 		{
 			QuickSort(arr, left, right);
@@ -61,21 +61,27 @@ namespace KWayMergeAlgo {
 		}
 		else
 		{
-			int parts = ceil((double)((len+1) / (k)));
-			parts += (len+1) % k;
+			int sizeOfSubArray = len / k;
+			sizeOfSubArray += len % k;
+			int leftOver = len % k;
 			for (int i = 0; i < k; i++)
 			{
-				if (left + (i * parts + (parts)-1) < _nSize)
+
+				int leftOffset = (i * sizeOfSubArray);
+
+				if (i < k - leftOver)
 				{
-					KMergeSort(arr, (i * parts) + left, left + (i * parts + (parts)-1), k);
+					KMergeSort(arr, leftOffset + left,
+						left + leftOffset + sizeOfSubArray - 1, k);
 				}
 				else
-				{//is that ok? i am not sure
-					KMergeSort(arr, (i * parts) + left, _nSize-1,k);
+				{
+					KMergeSort(arr, leftOffset + left,
+						left + leftOffset + sizeOfSubArray, k);
 				}
 			}
-			cout << "left = " << left << " right = " << right << endl;
-		//	cout << "left = " << left << " right = " << right << endl;
+			//cout << "left = " << left << " right = " << right << endl;
+				//cout << "left = " << left << " right = " << right << endl;
 			mergeKArraysWithHeap(arr, left, right, k);
 			//done:Merge with Heap....https://medium.com/outco/how-to-merge-k-sorted-arrays-c35d87aa298e
 		}
@@ -91,21 +97,43 @@ namespace KWayMergeAlgo {
 	void KWayMergeSort::mergeKArraysWithHeap(int* arr, int left, int right, int k)
 	{
 		int leftC = left;
-		static int idx = 0;
 		int counter = 0;
 		Pair newPair;
 		Pair currPair;
-		int len = right - left;
+		int len = right - left + 1;
+		Pair* sizeArr = new Pair[len];
 		int newLeft;
-		int parts = ceil((double)((len + 1) / (k)));
-		parts += (len + 1) % k;
-
+		int sizeOfSubArray = len / k;
+		sizeOfSubArray += len % k;
+		int leftOver = len % k;
+		Pair item;
 		//Init the Heap		
 		_minHeap.makeEmpty();
 
 		for (int i = 0; i < k; i++)
 		{
-			Pair item(arr[(i * parts)+left], (i * parts) + left, left+(i * parts + (parts)-1));
+			int leftOffset = (i * sizeOfSubArray);
+			sizeArr[i].setKey(i);
+			item.setIndexArr(i);
+			item.setKey(arr[leftOffset + left]);
+			if (i < k - leftOver)
+			{
+				
+				sizeArr[i].setIndexes(leftOffset + left,
+					left + leftOffset + sizeOfSubArray - 1);
+
+				item.setIndexes(leftOffset + left,
+					left + leftOffset + sizeOfSubArray - 1);
+			}
+			else
+			{
+				sizeArr[i].setIndexes(leftOffset + left,
+					left + leftOffset + sizeOfSubArray);
+				
+				item.setIndexes(leftOffset + left,
+					left + leftOffset + sizeOfSubArray);
+			}
+			cout << "left = " << item.getArrayIndexes().start << " right = " << item.getArrayIndexes().end << endl;
 			_minHeap.insert(item);
 		}
 
@@ -116,16 +144,16 @@ namespace KWayMergeAlgo {
 			newLeft = currPair.getArrayIndexes().start + 1;
 			counter++;
 
-			if (newLeft <= currPair.getArrayIndexes().end)
+			if (newLeft <= sizeArr[currPair.getIndexArr()].getArrayIndexes().end)
 			{
 				newPair.setKey(arr[newLeft]);
 				newPair.setIndexes(newLeft, currPair.getArrayIndexes().end);
 				_minHeap.insert(newPair);
 			}
 		}
-		for (int i = 0; i < counter && left+i<_nSize; ++i)
+		for (int i = 0; i < counter && left + i < _nSize; ++i)
 		{
-			_arr[left + i] = _newSortedArr[leftC -counter+i];
+			_arr[left + i] = _newSortedArr[leftC - counter + i];
 		}
 
 
