@@ -9,7 +9,7 @@ namespace KWayMergeAlgo {
 
 
 	KWayMergeSort::KWayMergeSort(int* arr, int n, int k, string outputName) :_kParts(k), _nSize(n), _arr(new int[n]),
-		_minHeap(k), _pfile(outputName),_newSortedArr(new int[n])
+		_minHeap(k), _pfile(outputName), _newSortedArr(new int[n])
 	{
 		if (!_pfile)
 		{
@@ -24,8 +24,8 @@ namespace KWayMergeAlgo {
 
 	void KWayMergeSort::ExcecuteKMergeSort()
 	{
-		KMergeSort(_arr, 0, _nSize, _kParts);
- 		for (int i = 0; i < _nSize; ++i)
+		KMergeSort(_arr, 0, _nSize - 1, _kParts);
+		for (int i = 0; i < _nSize; ++i)
 		{
 			cout << _arr[i] << endl;
 		}
@@ -53,32 +53,44 @@ namespace KWayMergeAlgo {
 
 	void KWayMergeSort::KMergeSort(int* arr, int left, int right, int k)
 	{
-		int len = right - left;
+		int len = right - left + 1;
+		int originLeft = left;
 		if (len < k)
 		{
 			QuickSort(arr, left, right);
 			return;
 		}
-		else
+
+		int nDividedByK = len / k;
+		int leftOver = len % k;
+		int counter=0;
+		
+		for (int i = 0; i < k; i++)
 		{
-			int parts = ceil((double)((len+1) / (k)));
-			parts += (len+1) % k;
-			for (int i = 0; i < k; i++)
-			{
-				if (left + (i * parts + (parts)-1) < _nSize)
-				{
-					KMergeSort(arr, (i * parts) + left, left + (i * parts + (parts)-1), k);
-				}
-				else
-				{//is that ok? i am not sure
-					KMergeSort(arr, (i * parts) + left, _nSize-1,k);
-				}
+			if (leftOver) {
+				counter = 1;
+				KMergeSort(arr, left + (i * nDividedByK),
+					left + (i * nDividedByK) + nDividedByK - 1 + counter, k);
+				left = left + 1;
 			}
-			cout << "left = " << left << " right = " << right << endl;
-		//	cout << "left = " << left << " right = " << right << endl;
-			mergeKArraysWithHeap(arr, left, right, k);
-			//done:Merge with Heap....https://medium.com/outco/how-to-merge-k-sorted-arrays-c35d87aa298e
+			else
+			{
+				KMergeSort(arr, left + (i * nDividedByK),
+					left + (i * nDividedByK) + nDividedByK - 1, k);
+				
+			}
+			if (leftOver)
+			{
+				leftOver--;
+				if (!leftOver)
+					counter = 0;
+			}
 		}
+		cout << "left = " << left << " right = " << right << endl;
+		//merge
+		mergeKArraysWithHeap(arr, left, right, k); //enter left origin
+		//done:Merge with Heap....https://medium.com/outco/how-to-merge-k-sorted-arrays-c35d87aa298e
+
 	}
 
 	KWayMergeSort::~KWayMergeSort()
@@ -91,24 +103,48 @@ namespace KWayMergeAlgo {
 	void KWayMergeSort::mergeKArraysWithHeap(int* arr, int left, int right, int k)
 	{
 		int leftC = left;
-		static int idx = 0;
 		int counter = 0;
 		Pair newPair;
 		Pair currPair;
-		int len = right - left;
+		int len = right - left + 1;
 		int newLeft;
-		int parts = ceil((double)((len + 1) / (k)));
-		parts += (len + 1) % k;
-
+		int nDividedByK = len / k;
+		int leftOver = len % k;
+		Pair item;
+		int originLeft = left;
 		//Init the Heap		
 		_minHeap.makeEmpty();
+		int leftCounter = 0;
+	
 
 		for (int i = 0; i < k; i++)
 		{
-			Pair item(arr[(i * parts)+left], (i * parts) + left, left+(i * parts + (parts)-1));
-			_minHeap.insert(item);
-		}
+			if (leftOver) {
+				leftCounter = 1;
+				item.setKey(arr[left + (i * nDividedByK)]);
+				item.setIndexes(left + (i * nDividedByK),
+					left + (i * nDividedByK) + nDividedByK - 1 + leftCounter);
+				left = left + 1;
 
+			}
+			else
+			{
+				item.setKey(arr[left + (i * nDividedByK)]);
+				item.setIndexes(left + (i * nDividedByK),
+					left + (i * nDividedByK) + nDividedByK - 1);
+			}
+			if (leftOver)
+			{
+				leftOver--;
+				if (!leftOver)
+					leftCounter = 0;
+			}
+			_minHeap.insert(item);
+
+		}
+		
+
+		leftC = originLeft;
 		while (!_minHeap.isEmpty())
 		{
 			currPair = _minHeap.DeleteMin();
@@ -123,9 +159,9 @@ namespace KWayMergeAlgo {
 				_minHeap.insert(newPair);
 			}
 		}
-		for (int i = 0; i < counter && left+i<_nSize; ++i)
+		for (int i = 0; i < counter && left + i < _nSize; ++i)
 		{
-			_arr[left + i] = _newSortedArr[leftC -counter+i];
+			_arr[originLeft + i] = _newSortedArr[leftC - counter + i];
 		}
 
 
