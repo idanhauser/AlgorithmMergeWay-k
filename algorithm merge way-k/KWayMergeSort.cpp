@@ -62,9 +62,9 @@ namespace KWayMergeAlgo {
 		else
 		{
 			int sizeOfSubArray = len / k;
-			sizeOfSubArray += len % k;
+		//sizeOfSubArray += len % k;
 			int leftOver = len % k;
-			for (int i = 0; i < k; i++)
+			for (int i = 0; i <=k; i++)
 			{
 
 				int leftOffset = (i * sizeOfSubArray);
@@ -104,7 +104,7 @@ namespace KWayMergeAlgo {
 		Pair* sizeArr = new Pair[len];
 		int newLeft;
 		int sizeOfSubArray = len / k;
-		sizeOfSubArray += len % k;
+		//sizeOfSubArray += len % k;
 		int leftOver = len % k;
 		Pair item;
 		//Init the Heap		
@@ -118,7 +118,7 @@ namespace KWayMergeAlgo {
 			item.setKey(arr[leftOffset + left]);
 			if (i < k - leftOver)
 			{
-				
+				item.setFlag(false);
 				sizeArr[i].setIndexes(leftOffset + left,
 					left + leftOffset + sizeOfSubArray - 1);
 
@@ -127,6 +127,8 @@ namespace KWayMergeAlgo {
 			}
 			else
 			{
+				item.setFlag(true);
+				
 				sizeArr[i].setIndexes(leftOffset + left,
 					left + leftOffset + sizeOfSubArray);
 				
@@ -144,12 +146,21 @@ namespace KWayMergeAlgo {
 			newLeft = currPair.getArrayIndexes().start + 1;
 			counter++;
 
-			if (newLeft <= sizeArr[currPair.getIndexArr()].getArrayIndexes().end)
+			if (newLeft < sizeArr[currPair.getIndexArr()].getArrayIndexes().end)
 			{
 				newPair.setKey(arr[newLeft]);
 				newPair.setIndexes(newLeft, currPair.getArrayIndexes().end);
+
+				_minHeap.insert(newPair);
+
+			}
+			else if ((newLeft == sizeArr[currPair.getIndexArr()].getArrayIndexes().end)&&(currPair.getFlag()))
+			{
+				newPair.setKey(arr[newLeft]);
+				newPair.setIndexes(newLeft, currPair.getArrayIndexes().end + 1);
 				_minHeap.insert(newPair);
 			}
+
 		}
 		for (int i = 0; i < counter && left + i < _nSize; ++i)
 		{
@@ -157,7 +168,8 @@ namespace KWayMergeAlgo {
 		}
 
 
-	}
+
+	 }
 
 	void KWayMergeSort::QuickSort(int* arr, int left, int right)
 	{

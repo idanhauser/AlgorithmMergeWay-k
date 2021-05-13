@@ -90,6 +90,17 @@ namespace KWayMergeAlgo
 		return _arrayIndexes.idx_arr;
 	}
 
+	bool Pair::setFlag(bool flag)
+	{
+		_arrayIndexes.flag = flag;
+		return true;
+	}
+
+	bool Pair::getFlag() const
+	{
+		return _arrayIndexes.flag;
+	}
+
 	/// <summary>
 	/// prints the pair
 	/// </summary>

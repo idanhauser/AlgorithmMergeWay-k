@@ -7,6 +7,7 @@ namespace KWayMergeAlgo
 	{
 		struct Indexes
 		{
+			bool flag=false;
 			int idx_arr = -1;
 			int start;
 			int end;
@@ -25,6 +26,8 @@ namespace KWayMergeAlgo
 		bool setIndexes(int left, int right);
 		bool setIndexArr(int idxArr);
 		int getIndexArr() const;
+		bool setFlag(bool flag);
+		bool getFlag() const;
 		friend std::ostream& operator<<(ostream& os, const Pair& pair);
 		//good to use defult operator for =
 	private:
@@ -34,3 +37,6 @@ namespace KWayMergeAlgo
 
 	};
 }
+
+
+
