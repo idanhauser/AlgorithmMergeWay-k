@@ -24,7 +24,7 @@ namespace KWayMergeAlgo {
 
 	void KWayMergeSort::ExcecuteKMergeSort()
 	{
-		KMergeSort(_arr, 0, _nSize, _kParts);
+		KMergeSort(_arr, 0, _nSize-1, _kParts);
  		for (int i = 0; i < _nSize; ++i)
 		{
 			cout << _arr[i] << endl;
@@ -115,8 +115,8 @@ namespace KWayMergeAlgo {
 			_newSortedArr[leftC++] = currPair.getMinElement();
 			newLeft = currPair.getArrayIndexes().start + 1;
 			counter++;
-
-			if (newLeft <= currPair.getArrayIndexes().end)
+			
+			if ((newLeft <= currPair.getArrayIndexes().end)&&(newLeft<_nSize))
 			{
 				newPair.setKey(arr[newLeft]);
 				newPair.setIndexes(newLeft, currPair.getArrayIndexes().end);
