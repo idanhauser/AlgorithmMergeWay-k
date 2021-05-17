@@ -54,7 +54,7 @@ namespace KWayMergeAlgo {
 	void KWayMergeSort::KMergeSort(int* arr, int left, int right, int k)
 	{
 		int len = right - left + 1;
-		int originLeft = left;
+	//	int originLeft = left;
 		if (len < k)
 		{
 			QuickSort(arr, left, right);
@@ -64,27 +64,20 @@ namespace KWayMergeAlgo {
 		int nDividedByK = len / k;
 		int leftOver = len % k;
 		int counter=0;
-		
+		if (leftOver)
+			counter = k + 1;
+		else
+			counter = k;
 		for (int i = 0; i < k; i++)
 		{
-			if (leftOver) {
-				counter = 1;
 				KMergeSort(arr, left + (i * nDividedByK),
-					left + (i * nDividedByK) + nDividedByK - 1 + counter, k);
-				left = left + 1;
-			}
-			else
-			{
-				KMergeSort(arr, left + (i * nDividedByK),
-					left + (i * nDividedByK) + nDividedByK - 1, k);
-				
-			}
-			if (leftOver)
-			{
-				leftOver--;
-				if (!leftOver)
-					counter = 0;
-			}
+					left + (i * nDividedByK)  + counter, k);
+				if (leftOver >= 0)
+				{
+					leftOver--;
+					if (!leftOver)
+						counter--;
+				}
 		}
 		cout << "left = " << left << " right = " << right << endl;
 		//merge
