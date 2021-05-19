@@ -63,11 +63,12 @@ namespace KWayMergeAlgo {
 		{
 			int sizeOfSubArray = len / k;
 		//sizeOfSubArray += len % k;
+			int leftOffset = 0;
 			int leftOver = len % k;
-			for (int i = 0; i <=k; i++)
+			for (int i = 0; i <k; i++)
 			{
-
-				int leftOffset = (i * sizeOfSubArray);
+				leftOffset = i * sizeOfSubArray;
+			
 
 				if (i < k - leftOver)
 				{
@@ -76,11 +77,19 @@ namespace KWayMergeAlgo {
 				}
 				else
 				{
-					KMergeSort(arr, leftOffset + left,
-						left + leftOffset + sizeOfSubArray, k);
+					if (left + leftOffset + sizeOfSubArray < _nSize)
+						KMergeSort(arr, leftOffset + left,
+							left + leftOffset + sizeOfSubArray, k);
+				
 				}
+				
+				
 			}
-			//cout << "left = " << left << " right = " << right << endl;
+			
+			
+
+			
+			cout << "left = " << left << " right = " << right << endl;
 				//cout << "left = " << left << " right = " << right << endl;
 			mergeKArraysWithHeap(arr, left, right, k);
 			//done:Merge with Heap....https://medium.com/outco/how-to-merge-k-sorted-arrays-c35d87aa298e
@@ -104,41 +113,49 @@ namespace KWayMergeAlgo {
 		Pair* sizeArr = new Pair[len];
 		int newLeft;
 		int sizeOfSubArray = len / k;
-		//sizeOfSubArray += len % k;
 		int leftOver = len % k;
 		Pair item;
+		int leftOffset = 0;
 		//Init the Heap		
 		_minHeap.makeEmpty();
 
 		for (int i = 0; i < k; i++)
 		{
-			int leftOffset = (i * sizeOfSubArray);
-			sizeArr[i].setKey(i);
-			item.setIndexArr(i);
-			item.setKey(arr[leftOffset + left]);
-			if (i < k - leftOver)
-			{
-				item.setFlag(false);
-				sizeArr[i].setIndexes(leftOffset + left,
-					left + leftOffset + sizeOfSubArray - 1);
+				int leftOffset = (i * sizeOfSubArray);
+				sizeArr[i].setKey(i);
+				item.setIndexArr(i);
+				item.setKey(arr[leftOffset + left]);
+	
+				if (i < k - leftOver)
+				{
+					item.setFlag(false);
+					sizeArr[i].setIndexes(leftOffset + left,
+						left + leftOffset + sizeOfSubArray - 1);
 
-				item.setIndexes(leftOffset + left,
-					left + leftOffset + sizeOfSubArray - 1);
-			}
-			else
-			{
-				item.setFlag(true);
-				
-				sizeArr[i].setIndexes(leftOffset + left,
-					left + leftOffset + sizeOfSubArray);
-				
-				item.setIndexes(leftOffset + left,
-					left + leftOffset + sizeOfSubArray);
-			}
-			cout << "left = " << item.getArrayIndexes().start << " right = " << item.getArrayIndexes().end << endl;
-			_minHeap.insert(item);
-		}
+					item.setIndexes(leftOffset + left,
+						left + leftOffset + sizeOfSubArray - 1);
+				}
+				else
+				{
+					leftOffset = i * sizeOfSubArray;
 
+					item.setFlag(true);
+
+					sizeArr[k].setIndexes(leftOffset + left,
+						left + leftOffset + sizeOfSubArray);
+
+					item.setIndexes(leftOffset + left,
+						left + leftOffset + sizeOfSubArray);
+				
+				}
+			
+				cout << "left = " << item.getArrayIndexes().start << " right = " << item.getArrayIndexes().end << endl;
+				_minHeap.insert(item);
+			}
+		
+	
+			
+	
 		while (!_minHeap.isEmpty())
 		{
 			currPair = _minHeap.DeleteMin();
@@ -146,7 +163,7 @@ namespace KWayMergeAlgo {
 			newLeft = currPair.getArrayIndexes().start + 1;
 			counter++;
 
-			if (newLeft < sizeArr[currPair.getIndexArr()].getArrayIndexes().end)
+			if (newLeft < currPair.getArrayIndexes().end && newLeft<_nSize)
 			{
 				newPair.setKey(arr[newLeft]);
 				newPair.setIndexes(newLeft, currPair.getArrayIndexes().end);
