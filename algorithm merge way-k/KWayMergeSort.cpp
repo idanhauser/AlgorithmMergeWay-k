@@ -1,7 +1,7 @@
 ﻿#include "KWayMergeSort.h"
 #include "Pair.h"
-#include <math.h> 
 #include <iostream>
+#include <math.h> 
 
 
 
@@ -59,26 +59,26 @@ namespace KWayMergeAlgo {
 			QuickSort(arr, left, right);
 			return;
 		}
-		else
+
+		int parts = (len + 1) / (k);
+		int leftOver = (len + 1) % k;
+		//parts += leftOver;
+		for (int i = 0; i < k - leftOver; i++)
 		{
-			int parts = ceil((double)((len+1) / (k)));
-			parts += (len+1) % k;
-			for (int i = 0; i < k; i++)
-			{
-				if (left + (i * parts + (parts)-1) < _nSize)
-				{
-					KMergeSort(arr, (i * parts) + left, left + (i * parts + (parts)-1), k);
-				}
-				else
-				{//is that ok? i am not sure
-					KMergeSort(arr, (i * parts) + left, _nSize-1,k);
-				}
-			}
-			cout << "left = " << left << " right = " << right << endl;
-		//	cout << "left = " << left << " right = " << right << endl;
-			mergeKArraysWithHeap(arr, left, right, k);
-			//done:Merge with Heap....https://medium.com/outco/how-to-merge-k-sorted-arrays-c35d87aa298e
+
+			KMergeSort(arr, left + (i * parts), left + ((i + 1) * parts) - 1, k);
 		}
+		for (int i = 0; i < leftOver; i++)
+		{
+
+			KMergeSort(arr, left + (k - leftOver + i) * parts+i,
+				left + (k - leftOver + i + 1) * parts + i , k);
+		}
+		cout << "left = " << left << " right = " << right << endl;
+		//	cout << "left = " << left << " right = " << right << endl;
+		mergeKArraysWithHeap(arr, left, right, k);
+		//done:Merge with Heap....https://medium.com/outco/how-to-merge-k-sorted-arrays-c35d87aa298e
+
 	}
 
 	KWayMergeSort::~KWayMergeSort()
@@ -90,42 +90,53 @@ namespace KWayMergeAlgo {
 
 	void KWayMergeSort::mergeKArraysWithHeap(int* arr, int left, int right, int k)
 	{
-		int leftC = left;
+		int leftC = 0;
 		static int idx = 0;
 		int counter = 0;
 		Pair newPair;
 		Pair currPair;
 		int len = right - left;
 		int newLeft;
-		int parts = ceil((double)((len + 1) / (k)));
-		parts += (len + 1) % k;
+		int parts = (len + 1) / (k);
+		int leftOver = (len + 1) % k;
+		//parts += leftOver;
 
 		//Init the Heap		
 		_minHeap.makeEmpty();
 
-		for (int i = 0; i < k; i++)
+		for (int i = 0; i < k-leftOver; i++)
 		{
-			Pair item(arr[(i * parts)+left], (i * parts) + left, left+(i * parts + (parts)-1));
+			/*if ((left + (i * parts) > len) || (left + (i * parts + (parts)-1)) > len)
+				break;*/
+			Pair item(arr[left + (i * parts)], (i * parts) + left, left + ((i + 1) * parts) - 1);
 			_minHeap.insert(item);
 		}
-
+		for (int i = 0; i < leftOver; i++)
+		{
+			/*if ((left + (i * parts) > len) || (left + (i * parts + (parts)-1)) > len)
+				break;*/
+			Pair item(arr[left + (k - leftOver + i)* parts + i], left + (k - leftOver + i )* parts  + i,
+				left + (k - leftOver + i+1)* parts + i);
+			_minHeap.insert(item);
+		}
 		while (!_minHeap.isEmpty())
 		{
 			currPair = _minHeap.DeleteMin();
-			_newSortedArr[leftC++] = currPair.getMinElement();
+			_newSortedArr[leftC] = currPair.getMinElement();
+			leftC++;
 			newLeft = currPair.getArrayIndexes().start + 1;
 			counter++;
 			
-			if ((newLeft <= currPair.getArrayIndexes().end)&&(newLeft<_nSize))
+			if (newLeft< currPair.getArrayIndexes().end+1)
 			{
 				newPair.setKey(arr[newLeft]);
 				newPair.setIndexes(newLeft, currPair.getArrayIndexes().end);
 				_minHeap.insert(newPair);
 			}
 		}
-		for (int i = 0; i < counter && left+i<_nSize; ++i)
+		for (int i = 0; i < _nSize; ++i)
 		{
-			_arr[left + i] = _newSortedArr[leftC -counter+i];
+			_arr[left + i] = _newSortedArr[i];
 		}
 
 
