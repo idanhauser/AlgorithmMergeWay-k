@@ -7,6 +7,11 @@
 using namespace std;
 using namespace KWayMergeAlgo;
 
+/// <summary>
+/// checking that the input numbers are valid
+/// </summary>
+/// <param name="c">The char we checks</param>
+/// <returns>true if valid</returns>
 bool checkInput(char c)
 {
 	int digit = c - '0';
@@ -25,6 +30,13 @@ bool checkInput(char c)
 	}
 
 }
+
+/// <summary>
+/// Reading from file all the numbers and check is valid
+/// </summary>
+/// <param name="size">how many numbers we need to read</param>
+/// <param name="inFileName">the file we read from</param>
+/// <param name="arr">the arr we store the numbers</param>
 void ReadDataFromUser(int size, const string& inFileName, int* arr)
 {
 	int counter = 0;
