@@ -27,11 +27,13 @@ bool checkInput(char c)
 }
 void ReadDataFromUser(int size, const string& inFileName, int* arr)
 {
+	int counter = 0;
 	bool neg = false;
 	int index = 0;
 	
 	ifstream inData(inFileName);
-	string intxt;
+	string inTxt;
+	
 	if (!inData)
 	{
 		cout << "wrong input." << endl;
@@ -39,18 +41,21 @@ void ReadDataFromUser(int size, const string& inFileName, int* arr)
 	}
 	
 	while (!inData.eof()) {
-		inData >> intxt;
+		inData >> inTxt;
+		counter++;
+		
 		int numBuilder = 0;
-		for (int i = 0; i < intxt.size(); ++i)
+		for (int i = 0; i < inTxt.size(); ++i)
 		{
-			if(i==0 && intxt.at(0)=='-')
+			if(i==0 && inTxt.at(0)=='-')
 			{
 				neg = true;
 				continue;
 			}
-			if (checkInput(intxt.at(i)));
-			numBuilder = numBuilder * 10 + int(intxt.at(i)) - '0';
+			if (checkInput(inTxt.at(i)));
+			numBuilder = numBuilder * 10 + int(inTxt.at(i)) - '0';
 		}
+	
 		if (!neg)
 		{
 			arr[index++] = numBuilder;
@@ -61,6 +66,11 @@ void ReadDataFromUser(int size, const string& inFileName, int* arr)
 		}
 		neg = false;
 	}
+	if(counter!=size)
+	{
+		cout << "wrong input." << endl;
+		exit(2);
+	}
 	inData.close();
 }
 
@@ -68,30 +78,32 @@ void ReadDataFromUser(int size, const string& inFileName, int* arr)
 int main()
 {
 	int* arr = nullptr;
-	int size = 560;
-	int k =9;
-	string inputName = "input_file_3.txt";
-	string outputName = "output.txt";
+	int size;
+	int k;
+	string inputName;
+	string outputName ;
 
-
-	/*
 		cout << "Enter how many numbers there are in the file" << endl;
 		cin >> size;
 
-		cout << "Enter k";
+		cout << "Enter K" <<endl;
 		cin >> k;
-
+	
 		cout << "Enter name of input file:" << endl;
 		cin >> inputName;
 
 		cout << "Enter name of output file" << endl;
-		cin >> outputName;*/
+		cin >> outputName;
 	arr = new int[size];
 	ReadDataFromUser(size, inputName, arr);
-
+	if (k <= 0)
+	{
+		cout << "wrong input." << endl;
+		exit(2);
+	}
 
 	KWayMergeSort sortingRunner(arr, size, k, outputName);
 	sortingRunner.ExcecuteKMergeSort();
-//	delete[] arr;
+	delete[] arr;
 }
 

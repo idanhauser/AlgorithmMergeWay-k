@@ -28,6 +28,7 @@ namespace KWayMergeAlgo {
 
 		void mergeKArraysWithHeap(int* pArr, int left, int right, int k);
 		void KMergeSort(int* arr, int left, int right, int k);
+		void writeDataToFile();
 		void QuickSort(int* arr, int left, int right);
 		int Partition(int* arr, int left, int right);
 		void swap(int* pnum1, int* pnum2);
