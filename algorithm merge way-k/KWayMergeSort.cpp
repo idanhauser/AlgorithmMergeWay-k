@@ -91,7 +91,6 @@ namespace KWayMergeAlgo {
 	void KWayMergeSort::mergeKArraysWithHeap(int* arr, int left, int right, int k)
 	{
 		int leftC = 0;
-		static int idx = 0;
 		int counter = 0;
 		Pair newPair;
 		Pair currPair;
@@ -134,7 +133,7 @@ namespace KWayMergeAlgo {
 				_minHeap.insert(newPair);
 			}
 		}
-		for (int i = 0; i < _nSize; ++i)
+		for (int i = 0; i <= right-left; ++i)
 		{
 			_arr[left + i] = _newSortedArr[i];
 		}
