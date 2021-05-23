@@ -42,24 +42,24 @@ void ReadDataFromUser(int size, const string& inFileName, int* arr)
 	int counter = 0;
 	bool neg = false;
 	int index = 0;
-	
+
 	ifstream inData(inFileName);
 	string inTxt;
-	
+
 	if (!inData)
 	{
 		cout << "wrong input." << endl;
 		exit(2);
 	}
-	
+
 	while (!inData.eof()) {
 		inData >> inTxt;
 		counter++;
-		
+
 		int numBuilder = 0;
 		for (int i = 0; i < inTxt.size(); ++i)
 		{
-			if(i==0 && inTxt.at(0)=='-')
+			if (i == 0 && inTxt.at(0) == '-')
 			{
 				neg = true;
 				continue;
@@ -67,7 +67,7 @@ void ReadDataFromUser(int size, const string& inFileName, int* arr)
 			if (checkInput(inTxt.at(i)));
 			numBuilder = numBuilder * 10 + int(inTxt.at(i)) - '0';
 		}
-	
+
 		if (!neg)
 		{
 			arr[index++] = numBuilder;
@@ -78,7 +78,7 @@ void ReadDataFromUser(int size, const string& inFileName, int* arr)
 		}
 		neg = false;
 	}
-	if(counter!=size)
+	if (counter != size)
 	{
 		cout << "wrong input." << endl;
 		exit(2);
@@ -93,19 +93,24 @@ int main()
 	int size;
 	int k;
 	string inputName;
-	string outputName ;
+	string outputName;
 
-		cout << "Enter how many numbers there are in the file" << endl;
-		cin >> size;
+	cout << "Enter how many numbers there are in the file" << endl;
+	cin >> size;
 
-		cout << "Enter K" <<endl;
-		cin >> k;
-	
-		cout << "Enter name of input file:" << endl;
-		cin >> inputName;
+	cout << "Enter K" << endl;
+	cin >> k;
 
-		cout << "Enter name of output file" << endl;
-		cin >> outputName;
+	cout << "Enter name of input file:" << endl;
+	cin >> inputName;
+
+	cout << "Enter name of output file" << endl;
+	cin >> outputName;
+	if (size < 0)
+	{
+		cout << "wrong input." << endl;
+		exit(2);
+	}
 	arr = new int[size];
 	ReadDataFromUser(size, inputName, arr);
 	if (k <= 0)
