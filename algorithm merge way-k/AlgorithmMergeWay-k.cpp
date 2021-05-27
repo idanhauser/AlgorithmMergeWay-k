@@ -106,7 +106,7 @@ int main()
 
 	cout << "Enter name of output file" << endl;
 	cin >> outputName;
-	if (size < 0)
+	if ((size < 0)||(k>size))
 	{
 		cout << "wrong input." << endl;
 		exit(2);
